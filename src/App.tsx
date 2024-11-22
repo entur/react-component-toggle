@@ -30,7 +30,7 @@ export function App() {
         <div className="card">
           <ComponentToggle<MyFeatures, ButtonFeatureProps>
             feature="button"
-            label="Click me"
+            label={`I was clicked ${count} times! Click me again!`}
             onClick={() => setCount(count + 1)}
             renderFallback={() => <button>Button feature is disabled</button>}
           />

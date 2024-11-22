@@ -1,6 +1,6 @@
-export { FeatureFlagProvider } from './components/FeatureFlagProvider'
-export type { FeatureFlags, FeatureFlagContextType } from './components/FeatureFlagProvider/types'
-export { useFeatureFlagsContext } from './components/FeatureFlagProvider/context'
+export { ComponentToggleProvider } from './components/ComponentToggleProvider'
+export type { ToggleFlags, ComponentToggleContextType } from './components/ComponentToggleProvider/types'
+export { useComponentToggleContext, useComponentToggle } from './components/ComponentToggleProvider/context'
 
-export { default as FeatureGate } from './components/FeatureGate'
-export type { FeatureGateProps, FeatureComponent } from './components/FeatureGate/types'
+export { default as ComponentToggle } from './components/ComponentToggle'
+export type { ComponentToggleProps, FeatureComponent } from './components/ComponentToggle/types'

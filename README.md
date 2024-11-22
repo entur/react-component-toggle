@@ -1,14 +1,15 @@
-# react-lazy-features
+# react-component-toggle
 
 Make any React component feature-flaggable with full type safety and lazy loading.
 
-Lazy features allows development of new functionality with less risk and without affecting
-other installations. Features are controlled by feature flags. The feature component is designed to support code splitting, so that each feature will be compiled into separate chunks. React will then postpone the downloading of any given chunk until it decides it's time to render the component inside.
+Features are controlled by feature flags. The component toggle is designed to support code splitting, 
+so that each feature will be compiled into separate chunks. React will then postpone the downloading 
+of any given chunk until it decides it's time to render the component inside.
 
 This library consists of two components:
 
-- `FeatureGate` - a component that is only rendered when the feature flag is enabled.
-- `FeatureFlagProvider` - a component that provides the feature flag context.
+- `ComponentToggle` - a component that is only rendered when its toggle flag is enabled.
+- `ComponentToggleProvider` - a component that provides the toggle configuration context.
 
 ## How to develop a feature
 
@@ -33,16 +34,16 @@ The folder must also have
 a types.d.ts file which exports the props type declaration for your component.
 
     // ext/foobar/types.d.ts
-    export interface FoobarProps extends FeatureGateProps<Features> {
+    export interface FoobarProps extends ComponentToggleProps<Features> {
         foo: string;
     }
 
-This ensures type safety across the FeatureGate wrapper without having an explicit dependency
+This ensures type safety across the ComponentToggle wrapper without having an explicit dependency
 to your component's runtime code.
 
-To use your feature in the main code, you'll use the FeatureGate:
+To use your feature in the main code, you'll use the ComponentToggle:
 
-    <FeatureGate<FoobarProps>
+    <ComponentToggle<FoobarProps>
         feature="foobar"
         foo="bar"
     />
@@ -55,7 +56,7 @@ If "foobar" is `true` it will render:
 A `renderFallback` function prop is also available to give the option to render something else
 if the feature is not enabled:
 
-    <FeatureGate<FoobarProps>
+    <ComponentToggle<FoobarProps>
         feature="foobar"
         foo="bar"
         renderFallback={() => <h1>foo</h1>}
@@ -69,10 +70,10 @@ if feature `foobar` is not enabled.
 
 ## Configuration
 
-The `FeatureFlagProvider` component requires two props:
+The `ComponentToggleProvider` component requires two props:
 
 - `flags`: An object containing your feature flags configuration
-- `extBasePath`: The base path to your feature components directory
+- `componentsPath`: The base path to your feature components directory
 
 Example:
 
@@ -81,15 +82,15 @@ const flags = {
   foobar: true
 }
 
-<FeatureFlagProvider 
+<ComponentToggleProvider 
   flags={flags}
-  extBasePath="/src/ext" // Points to where your feature components are located
+  componentsPath="/src/ext" // Points to where your feature components are located
 >
   <App />
-</FeatureFlagProvider>
+</ComponentToggleProvider>
 ```
 
-The `extBasePath` should point to the directory where your feature components are located relative to your application's root. This is necessary for proper code splitting and dynamic imports to work.
+The `componentsPath` should point to the directory where your feature components are located relative to your application's root. This is necessary for proper code splitting and dynamic imports to work.
 
 For example, if your feature components are in:
 ```
@@ -100,7 +101,7 @@ your-app/
         index.tsx
 ```
 
-Then you would set `extBasePath="/src/ext"`.
+Then you would set `componentsPath="/src/ext"`.
 
 ## How features are controlled by configuration
 
@@ -121,7 +122,7 @@ all features are turned off, and must be explicitly set to be enabled:
 
 ## Nested features
 
-`FeatureGate` supports nesting features 2 levels deep. Meaning, you can group several features into one
+`ComponentToggle` supports nesting features 2 levels deep. Meaning, you can group several features into one
 mega-feature, and configure them as one. They will also be chunked together as one file.
 
 Example, given the following folder structure:
@@ -139,14 +140,14 @@ and configuration setting:
 
 You can reference each sub-level feature as follows:
 
-    <FeatureGate<FoobarProps>
+    <ComponentToggle<FoobarProps>
         feature="foobar/foo"
         foo="bar"
     />
 
 and
 
-    <FeatureGate<FoobarProps>
+    <ComponentToggle<FoobarProps>
         feature="foobar/bar"
         bar="foo"
     />

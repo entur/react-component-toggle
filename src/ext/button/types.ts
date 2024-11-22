@@ -1,7 +1,7 @@
-import { FeatureGateProps } from '../../../lib/components/FeatureGate/types'
+import { ComponentToggleProps } from '../../../lib/components/ComponentToggle/types'
 import { MyFeatures } from '../../config'
 
-export interface ButtonFeatureProps extends FeatureGateProps<MyFeatures> {
+export interface ButtonFeatureProps extends ComponentToggleProps<MyFeatures> {
   label: string
   onClick: () => void
 }

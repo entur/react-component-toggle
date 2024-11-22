@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FeatureFlagProvider, FeatureFlags, FeatureGate } from '../lib/main'
+import { ComponentToggleProvider, ToggleFlags, ComponentToggle } from '../lib/main'
 import type { ButtonFeatureProps } from './ext/button/types'
 import './App.css'
 import { MyFeatures } from './config'
@@ -8,15 +8,12 @@ export function App() {
   const [count, setCount] = useState(0)
   const [featureEnabled, setFeatureEnabled] = useState(false)
 
-  const featureFlags: FeatureFlags = {
+  const toggleFlags: ToggleFlags = {
     button: featureEnabled
   }
 
   return (
-    <FeatureFlagProvider 
-      flags={featureFlags} 
-      extBasePath="/src/ext"
-    >
+    <ComponentToggleProvider flags={toggleFlags} componentsPath="/src/ext">
       <div>
         <h1>Sandbox Feature Demo</h1>
         <div className="feature-toggle">
@@ -30,7 +27,7 @@ export function App() {
           </label>
         </div>
         <div className="card">
-          <FeatureGate<MyFeatures, ButtonFeatureProps>
+          <ComponentToggle<MyFeatures, ButtonFeatureProps>
             feature="button"
             label="Click me"
             onClick={() => setCount(count + 1)}
@@ -38,7 +35,7 @@ export function App() {
           />
         </div>
       </div>
-    </FeatureFlagProvider>
+    </ComponentToggleProvider>
   )
 }
 

@@ -1,25 +1,25 @@
 import { lazy, memo, Suspense, useMemo } from 'react';
-import { FeatureFlags } from '../FeatureFlagProvider';
-import { FeatureComponent, FeatureGateProps } from './types';
-import { useFeatureFlagsContext } from '../FeatureFlagProvider/context';
+import { FeatureFlags } from '../ComponentToggleProvider';
+import { FeatureComponent, ComponentToggleProps } from './types';
+import { useComponentToggleContext } from '../ComponentToggleProvider/context';
 
 /**
  * A component that can load a feature component. It is a generic component that
  * lazily renders the feature component identified by the `feature` prop.
  * The component is only rendered when the corresponding feature flag is enabled.
  */
-export const InternalFeatureGate = <
+export const InternalComponentToggle = <
   Features extends FeatureFlags,
-  Props extends FeatureGateProps<Features>,
+  Props extends ComponentToggleProps<Features>,
 >({
   feature,
   renderFallback,
   ...props
 }: Props) => {
-  const { flags: featureFlags, extBasePath } = useFeatureFlagsContext();
+  const { flags: featureFlags, componentsPath } = useComponentToggleContext();
 
-  if (!extBasePath) {
-    throw new Error('extBasePath must be provided in FeatureFlagProvider');
+  if (!componentsPath) {
+    throw new Error('componentsPath must be provided in ComponentToggleProvider');
   }
 
   const splitFeature = useMemo(() => (feature as string).split('/'), [feature]);
@@ -32,15 +32,15 @@ export const InternalFeatureGate = <
     // Use a function that returns the import() call
     const importFeature = () => {
       const path = splitFeature.length === 2
-        ? `${extBasePath}/${splitFeature[0]}/${splitFeature[1]}`
-        : `${extBasePath}/${splitFeature[0]}`;
+        ? `${componentsPath}/${splitFeature[0]}/${splitFeature[1]}`
+        : `${componentsPath}/${splitFeature[0]}`;
       
       // Let the consuming app's build system resolve the path
       return import(/* @vite-ignore */ path);
     };
 
     return memo(lazy(importFeature));
-  }, [splitFeature, extBasePath]);
+  }, [splitFeature, componentsPath]);
 
   const featureEnabled = useMemo(
     () =>
@@ -62,6 +62,6 @@ export const InternalFeatureGate = <
   );
 };
 
-export default memo(InternalFeatureGate) as typeof InternalFeatureGate;
+export default memo(InternalComponentToggle) as typeof InternalComponentToggle;
 
-export type { FeatureComponent, FeatureGateProps } from './types';
+export type { FeatureComponent, ComponentToggleProps } from './types';

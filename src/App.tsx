@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { ComponentToggleProvider, ToggleFlags, ComponentToggle } from '../lib/main'
 import type { ButtonFeatureProps } from './ext/button/types'
+import type { MyFeatures } from './config'
 import './App.css'
-import { MyFeatures } from './config'
+
 
 export function App() {
   const [count, setCount] = useState(0)

@@ -1,8 +1,7 @@
-import { FeatureComponent } from '../../../lib/components/FeatureGate/types'
+import { FeatureComponent } from '../../../lib/main'
 import { ButtonFeatureProps } from './types'
-import { FeatureFlags } from '../../config/config'
 
-const Button: FeatureComponent<FeatureFlags, ButtonFeatureProps> = ({
+const Button: FeatureComponent<ButtonFeatureProps> = ({
   label,
   onClick,
 }) => {

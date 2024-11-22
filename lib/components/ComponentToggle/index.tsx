@@ -1,5 +1,5 @@
 import { lazy, memo, Suspense, useMemo } from 'react';
-import { FeatureFlags } from '../ComponentToggleProvider';
+import { ToggleFlags } from '../ComponentToggleProvider/types';
 import { FeatureComponent, ComponentToggleProps } from './types';
 import { useComponentToggleContext } from '../ComponentToggleProvider/context';
 
@@ -9,9 +9,8 @@ import { useComponentToggleContext } from '../ComponentToggleProvider/context';
  * The component is only rendered when the corresponding feature flag is enabled.
  */
 export const InternalComponentToggle = <
-  Features extends FeatureFlags,
-  Props extends ComponentToggleProps<Features>,
->({
+  Features extends ToggleFlags,
+  Props extends ComponentToggleProps<Features>>({
   feature,
   renderFallback,
   ...props
@@ -24,7 +23,7 @@ export const InternalComponentToggle = <
 
   const splitFeature = useMemo(() => (feature as string).split('/'), [feature]);
 
-  const Component: FeatureComponent<Features, Props> = useMemo(() => {
+  const Component: FeatureComponent<Props> = useMemo(() => {
     if (splitFeature.length > 2) {
       throw new Error('Max feature depth is 2');
     }

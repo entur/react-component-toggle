@@ -19,6 +19,5 @@ export interface ComponentToggleProps<Features> {
    * that takes the specified Props type as its props.
    */
 export type FeatureComponent<
-    Features,
-    Props extends ComponentToggleProps<Features>,
+    Props extends ComponentToggleProps<any>,
 > = React.FunctionComponent<Props>;

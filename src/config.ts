@@ -1,5 +1,5 @@
-import { FeatureFlags } from "../lib/main";
+import { ToggleFlags } from "../lib/main";
 
-export interface MyFeatures extends FeatureFlags {
+export interface MyFeatures extends ToggleFlags {
     button: boolean
   }

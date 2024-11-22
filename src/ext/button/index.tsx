@@ -1,17 +1,13 @@
-import { SandboxComponent } from '../../../lib/components/SandboxFeature/types'
-import type { ButtonFeatureProps } from './types'
+import { FeatureComponent } from '../../../lib/components/FeatureGate/types'
+import { ButtonFeatureProps } from './types'
+import { FeatureFlags } from '../../config/config'
 
-const Button: SandboxComponent<{ button: boolean }, ButtonFeatureProps> = ({
+const Button: FeatureComponent<FeatureFlags, ButtonFeatureProps> = ({
   label,
   onClick,
-  className = '',
 }) => {
   return (
-    <button
-      className={`sandbox-button ${className}`}
-      onClick={onClick}
-      type="button"
-    >
+    <button onClick={onClick}>
       {label}
     </button>
   )

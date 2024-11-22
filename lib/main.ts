@@ -1,6 +1,6 @@
-export { FeatureFlagProvider, } from './components/FeatureFlagProvider'
-export { useFeatureFlag } from './components/FeatureFlagProvider/context'
-export type { FeatureFlags } from './components/FeatureFlagProvider'
+export { FeatureFlagProvider } from './components/FeatureFlagProvider'
+export type { FeatureFlags, FeatureFlagContextType } from './components/FeatureFlagProvider/types'
+export { useFeatureFlagsContext } from './components/FeatureFlagProvider/context'
 
-export { default as SandboxFeature } from './components/SandboxFeature'
-export type { SandboxFeatureProps, SandboxComponent } from './components/SandboxFeature/types'
+export { default as FeatureGate } from './components/FeatureGate'
+export type { FeatureGateProps, FeatureComponent } from './components/FeatureGate/types'

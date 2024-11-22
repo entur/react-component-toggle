@@ -1,22 +1,22 @@
 import { lazy, memo, Suspense, useMemo } from 'react';
 import { FeatureFlags } from '../FeatureFlagProvider';
-import { SandboxComponent, SandboxFeatureProps } from './types';
+import { FeatureComponent, FeatureGateProps } from './types';
 import { useFeatureFlagsContext } from '../FeatureFlagProvider/context';
 
 /**
- * A component that can load a sandbox Component. It is a generic component with the same type
- * parameters as the SandboxComponent. It optionally and lazily renders the SandboxComponent
- * identified by through the `feature` prop, which identifies the path of the component to load.
+ * A component that can load a feature component. It is a generic component that
+ * lazily renders the feature component identified by the `feature` prop.
+ * The component is only rendered when the corresponding feature flag is enabled.
  */
-export const InternalSandboxFeature = <
+export const InternalFeatureGate = <
   Features extends FeatureFlags,
-  Props extends SandboxFeatureProps<Features>,
+  Props extends FeatureGateProps<Features>,
 >({
   feature,
   renderFallback,
   ...props
 }: Props) => {
-  const { flags: sandboxFeatures, extBasePath } = useFeatureFlagsContext();
+  const { flags: featureFlags, extBasePath } = useFeatureFlagsContext();
 
   if (!extBasePath) {
     throw new Error('extBasePath must be provided in FeatureFlagProvider');
@@ -24,7 +24,7 @@ export const InternalSandboxFeature = <
 
   const splitFeature = useMemo(() => (feature as string).split('/'), [feature]);
 
-  const Component: SandboxComponent<Features, Props> = useMemo(() => {
+  const Component: FeatureComponent<Features, Props> = useMemo(() => {
     if (splitFeature.length > 2) {
       throw new Error('Max feature depth is 2');
     }
@@ -44,24 +44,24 @@ export const InternalSandboxFeature = <
 
   const featureEnabled = useMemo(
     () =>
-      sandboxFeatures &&
-      Object.entries(sandboxFeatures).some(([key, value]) => {
+      featureFlags &&
+      Object.entries(featureFlags).some(([key, value]) => {
         return key.split('/')[0] === splitFeature[0] && value;
       }),
-    [sandboxFeatures, splitFeature],
+    [featureFlags, splitFeature],
   );
 
+  if (!featureEnabled) {
+    return renderFallback?.() ?? null;
+  }
+
   return (
-    <Suspense>
-      {featureEnabled ? (
-        <Component {...props} />
-      ) : renderFallback ? (
-        renderFallback()
-      ) : null}
+    <Suspense fallback={renderFallback?.() ?? null}>
+      <Component {...(props as any)} />
     </Suspense>
   );
 };
 
-export default memo(InternalSandboxFeature) as typeof InternalSandboxFeature;
+export default memo(InternalFeatureGate) as typeof InternalFeatureGate;
 
-export type {SandboxComponent, SandboxFeatureProps} from './types';
+export type { FeatureComponent, FeatureGateProps } from './types';

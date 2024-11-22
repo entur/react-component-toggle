@@ -1,13 +1,10 @@
 import { useState } from 'react'
-import { FeatureFlagProvider, SandboxFeature } from '../lib/main'
+import { FeatureFlagProvider, FeatureFlags, FeatureGate } from '../lib/main'
 import type { ButtonFeatureProps } from './ext/button/types'
 import './App.css'
+import { MyFeatures } from './config'
 
-export type FeatureFlags = {
-  button: boolean
-}
-
-function App() {
+export function App() {
   const [count, setCount] = useState(0)
   const [featureEnabled, setFeatureEnabled] = useState(false)
 
@@ -33,13 +30,11 @@ function App() {
           </label>
         </div>
         <div className="card">
-          <SandboxFeature<FeatureFlags, ButtonFeatureProps>
+          <FeatureGate<MyFeatures, ButtonFeatureProps>
             feature="button"
-            label={`Count is ${count}`}
-            onClick={() => setCount(count => count + 1)}
-            renderFallback={() => (
-              <pre>Sorry this feature is not enabled</pre>
-            )}
+            label="Click me"
+            onClick={() => setCount(count + 1)}
+            renderFallback={() => <button>Button feature is disabled</button>}
           />
         </div>
       </div>

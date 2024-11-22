@@ -1,27 +1,27 @@
-# react-sandbox-component
+# react-lazy-features
 
-Make any React component sandboxed and feature-flaggable with full type safety and lazy loading.
+Make any React component feature-flaggable with full type safety and lazy loading.
 
-Sandbox features allows development of new functionality with less risk and without affecting
-other installations. Sandbox features are controlled by feature flags. The SandboxFeature component is designed to support code splitting, so that each feature will be compiled into separate chunks. React will then postpone the downloading of any given chunk until it decides it's time to render the component inside.
+Lazy features allows development of new functionality with less risk and without affecting
+other installations. Features are controlled by feature flags. The feature component is designed to support code splitting, so that each feature will be compiled into separate chunks. React will then postpone the downloading of any given chunk until it decides it's time to render the component inside.
 
 This library consists of two components:
 
-- `SandboxFeature` - a component that is only rendered when the feature flag is enabled.
+- `FeatureGate` - a component that is only rendered when the feature flag is enabled.
 - `FeatureFlagProvider` - a component that provides the feature flag context.
 
-## How to develop a sandbox feature
+## How to develop a feature
 
-Sandbox features are placed in a folder with the same name as the feature. The feature name should be added
-to the SandboxFeatures interface.
+Features are placed in a folder with the same name as the feature. The feature name should be added
+to the Features interface.
 
 The folder should have an index.ts, with a default export. The default
-export should be the main entry (React) component of your sandbox feature.
+export should be the main entry (React) component of your feature.
 
 Example with a feature called `foobar`:
 
     //  ext/foobar/index.ts
-    const Foobar: SandboxComponent<SandboxFeatures, FoobarProps> = (props) => {
+    const Foobar: FeatureComponent<Features, FoobarProps> = (props) => {
         return (
             <h1>{props.foo}</h1>
         )
@@ -33,17 +33,16 @@ The folder must also have
 a types.d.ts file which exports the props type declaration for your component.
 
     // ext/foobar/types.d.ts
-    export interface FoobarProps extends SandboxFeatureProps<SandboxFeatures> {
+    export interface FoobarProps extends FeatureGateProps<Features> {
         foo: string;
     }
 
-This ensures type safety across the SandboxFeature wrapper without having an explicit dependency
+This ensures type safety across the FeatureGate wrapper without having an explicit dependency
 to your component's runtime code.
 
-To use your sandbox feature in the main code, you'll use the SandboxFeature component
-to wrap it:
+To use your feature in the main code, you'll use the FeatureGate:
 
-    <SandboxFeature<FoobarProps>
+    <FeatureGate<FoobarProps>
         feature="foobar"
         foo="bar"
     />
@@ -56,7 +55,7 @@ If "foobar" is `true` it will render:
 A `renderFallback` function prop is also available to give the option to render something else
 if the feature is not enabled:
 
-    <SandboxFeature<FoobarProps>
+    <FeatureGate<FoobarProps>
         feature="foobar"
         foo="bar"
         renderFallback={() => <h1>foo</h1>}
@@ -105,24 +104,24 @@ Then you would set `extBasePath="/src/ext"`.
 
 ## How features are controlled by configuration
 
-First of all, you must add each feature to the `SandboxFeatures` interface in `../config/config.ts`:
+First of all, you must add each feature to the `Features` interface in `../config/config.ts`:
 
-    interface SandboxFeatures {
+    interface Features {
         foobar: boolean;
     }
 
-The `sandboxFeatures` property of the bootstrap configuration controls each individual feature. By default,
+The `features` property of the bootstrap configuration controls each individual feature. By default,
 all features are turned off, and must be explicitly set to be enabled:
 
     {
-        "sandboxFeatures": {
+        "features": {
             "foobar": true
         }
     }
 
 ## Nested features
 
-`SandboxFeature` supports nesting features 2 levels deep. Meaning, you can group several features into one
+`FeatureGate` supports nesting features 2 levels deep. Meaning, you can group several features into one
 mega-feature, and configure them as one. They will also be chunked together as one file.
 
 Example, given the following folder structure:
@@ -140,19 +139,19 @@ and configuration setting:
 
 You can reference each sub-level feature as follows:
 
-    <SandboxFeature<FoobarProps>
+    <FeatureGate<FoobarProps>
         feature="foobar/foo"
         foo="bar"
     />
 
 and
 
-    <SandboxFeature<FoobarProps>
+    <FeatureGate<FoobarProps>
         feature="foobar/bar"
         bar="foo"
     />
 
-## How to include stylesheets in sandbox components
+## How to include stylesheets in feature components
 
 Importing stylesheets directly must be avoided, because the bundler will preload it regardless of the configuration.
 Therefore, stylesheets must be imported using the `url` option, and rendered inside `Helmet`:

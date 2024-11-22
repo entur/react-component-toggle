@@ -1,8 +1,7 @@
-import { SandboxFeatureProps } from '../../../lib/components/SandboxFeature/types'
-import { FeatureFlags } from '../../App'
+import { FeatureGateProps } from '../../../lib/components/FeatureGate/types'
+import { MyFeatures } from '../../config'
 
-export interface ButtonFeatureProps extends SandboxFeatureProps<FeatureFlags> {
+export interface ButtonFeatureProps extends FeatureGateProps<MyFeatures> {
   label: string
   onClick: () => void
-  className?: string
 }

@@ -1,47 +1,13 @@
 {
-  "name": "@entur/react-component-toggle",
-  "private": false,
+  "name": "@entur/react-sandbox-component-monorepo",
+  "private": true,
   "version": "0.0.1",
-  "type": "module",
-  "exports": {
-    ".": {
-      "types": "./dist/lib/main.d.ts",
-      "default": "./dist/main.js"
-    }
-  },
-  "files": [
-    "dist"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/entur/react-component-toggle"
-  },
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b ./tsconfig.lib.json && vite build",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
-  "peerDependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "build": "pnpm -r build",
+    "dev": "pnpm --filter @entur/react-component-toggle dev",
+    "lint": "pnpm -r lint"
   },
   "devDependencies": {
-    "@eslint/js": "^9.13.0",
-    "@types/node": "^22.9.1",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "@vitejs/plugin-react": "^4.3.3",
-    "eslint": "^9.13.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.14",
-    "glob": "^11.0.0",
-    "globals": "^15.11.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "typescript": "~5.6.2",
-    "typescript-eslint": "^8.11.0",
-    "vite": "^5.4.10",
-    "vite-plugin-dts": "^4.3.0"
+    "typescript": "~5.6.2"
   }
 }

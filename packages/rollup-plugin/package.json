@@ -1,0 +1,22 @@
+{
+  "name": "@entur/rollup-plugin-react-component-toggle",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0"
+  },
+  "peerDependencies": {
+    "rollup": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.1",
+    "typescript": "~5.6.2",
+    "rollup": "^4.9.0"
+  }
+}

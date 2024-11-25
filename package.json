@@ -2,6 +2,7 @@
   "name": "@entur/react-sandbox-component-monorepo",
   "private": true,
   "version": "0.0.1",
+  "license": "EUPL-1.2",
   "scripts": {
     "build": "pnpm -r build",
     "dev": "pnpm --filter @entur/react-component-toggle dev",

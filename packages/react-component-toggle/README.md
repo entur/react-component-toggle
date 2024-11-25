@@ -1,4 +1,4 @@
-# react-component-toggle
+# @entur/react-component-toggle
 
 Make any React component feature-flaggable with full type safety and lazy loading.
 
@@ -6,65 +6,94 @@ Features are controlled by feature flags. The component toggle is designed to su
 so that each feature will be compiled into separate chunks. React will then postpone the downloading 
 of any given chunk until it decides it's time to render the component inside.
 
+To enable code splitting for your feature components, you'll need to use the companion Rollup plugin [@entur/rollup-plugin-react-component-toggle](../rollup-plugin). See its documentation for setup instructions.
+
 This library consists of two components:
 
-- `ComponentToggle` - a component that is only rendered when its toggle flag is enabled.
-- `ComponentToggleProvider` - a component that provides the toggle configuration context.
+- `ComponentToggle` - a component that lazily loads and renders feature components based on feature flags. It only loads and renders the component when its corresponding feature flag is enabled.
+- `ComponentToggleProvider` - a component that provides the feature flags configuration and component path context.
+
+## Installation
+
+```bash
+npm install @entur/react-component-toggle
+# or
+yarn add @entur/react-component-toggle
+# or
+pnpm add @entur/react-component-toggle
+```
+
+For code splitting support, also install the companion Rollup plugin:
+
+```bash
+npm install --save-dev @entur/rollup-plugin-react-component-toggle
+```
 
 ## How to develop a feature
 
 Features are placed in a folder with the same name as the feature. The feature name should be added
-to the Features interface.
+to your application's Features type.
 
-The folder should have an index.ts, with a default export. The default
+The folder should have an index.tsx, with a default export. The default
 export should be the main entry (React) component of your feature.
 
 Example with a feature called `foobar`:
 
-    //  ext/foobar/index.ts
-    const Foobar: FeatureComponent<Features, FoobarProps> = (props) => {
-        return (
-            <h1>{props.foo}</h1>
-        )
-    };
+```tsx
+//  src/components/foobar/index.tsx
+const Foobar: FeatureComponent<Features, FoobarProps> = (props) => {
+    return (
+        <h1>{props.foo}</h1>
+    )
+};
 
-    export default Foobar;
+export default Foobar;
+```
 
-The folder must also have
-a types.d.ts file which exports the props type declaration for your component.
+The folder must also have a types.ts file which exports the props type declaration for your component.
 
-    // ext/foobar/types.d.ts
-    export interface FoobarProps extends ComponentToggleProps<Features> {
-        foo: string;
-    }
+```typescript
+// src/components/foobar/types.ts
+export interface FoobarProps extends ComponentToggleProps<Features> {
+    foo: string;
+}
+```
 
 This ensures type safety across the ComponentToggle wrapper without having an explicit dependency
 to your component's runtime code.
 
 To use your feature in the main code, you'll use the ComponentToggle:
 
-    <ComponentToggle<FoobarProps>
-        feature="foobar"
-        foo="bar"
-    />
+```tsx
+<ComponentToggle<FoobarProps>
+    feature="foobar"
+    foo="bar"
+/>
+```
 
 If "foobar" is `false` in your feature flags configuration, this will not render anything.
 If "foobar" is `true` it will render:
 
-    <h1>bar</1>
+```html
+<h1>bar</h1>
+```
 
 A `renderFallback` function prop is also available to give the option to render something else
 if the feature is not enabled:
 
-    <ComponentToggle<FoobarProps>
-        feature="foobar"
-        foo="bar"
-        renderFallback={() => <h1>foo</h1>}
-    />
+```tsx
+<ComponentToggle<FoobarProps>
+    feature="foobar"
+    foo="bar"
+    renderFallback={() => <h1>foo</h1>}
+/>
+```
 
 will render
 
-    <h1>foo</h1>
+```html
+<h1>foo</h1>
+```
 
 if feature `foobar` is not enabled.
 
@@ -78,13 +107,20 @@ The `ComponentToggleProvider` component requires two props:
 Example:
 
 ```tsx
+// Define your Features type
+interface Features {
+    foobar: boolean;
+}
+
+// Configure your feature flags
 const flags = {
   foobar: true
 }
 
+// Wrap your app with the provider
 <ComponentToggleProvider 
   flags={flags}
-  componentsPath="/src/ext" // Points to where your feature components are located
+  componentsPath="/src/components" // Points to where your feature components are located
 >
   <App />
 </ComponentToggleProvider>
@@ -96,29 +132,34 @@ For example, if your feature components are in:
 ```
 your-app/
   src/
-    ext/
+    components/
       foobar/
         index.tsx
 ```
 
-Then you would set `componentsPath="/src/ext"`.
+Then you would set `componentsPath="/src/components"`.
 
 ## How features are controlled by configuration
 
-First of all, you must add each feature to the `Features` interface in `../config/config.ts`:
+First, define your Features type in your application:
 
-    interface Features {
-        foobar: boolean;
-    }
+```typescript
+// src/types/features.ts
+export interface Features {
+    foobar: boolean;
+}
+```
 
-The `features` property of the bootstrap configuration controls each individual feature. By default,
+Then configure your features through the flags prop. By default,
 all features are turned off, and must be explicitly set to be enabled:
 
-    {
-        "features": {
-            "foobar": true
-        }
+```typescript
+const flags = {
+    features: {
+        foobar: true
     }
+}
+```
 
 ## Nested features
 
@@ -127,46 +168,73 @@ mega-feature, and configure them as one. They will also be chunked together as o
 
 Example, given the following folder structure:
 
-    // ext/foobar/foo/
-    // ext/foobar/bar/
+```
+src/
+  components/
+    foobar/
+      foo/
+        index.tsx
+      bar/
+        index.tsx
+```
 
 And the following feature definition:
 
+```typescript
+interface Features {
     foobar: boolean;
+}
+```
 
 and configuration setting:
 
+```typescript
+const flags = {
     foobar: true
+}
+```
 
 You can reference each sub-level feature as follows:
 
-    <ComponentToggle<FoobarProps>
-        feature="foobar/foo"
-        foo="bar"
-    />
+```tsx
+<ComponentToggle<FoobarProps>
+    feature="foobar/foo"
+    foo="bar"
+/>
+```
 
 and
 
-    <ComponentToggle<FoobarProps>
-        feature="foobar/bar"
-        bar="foo"
-    />
+```tsx
+<ComponentToggle<FoobarProps>
+    feature="foobar/bar"
+    bar="foo"
+/>
+```
 
 ## How to include stylesheets in feature components
 
-Importing stylesheets directly must be avoided, because the bundler will preload it regardless of the configuration.
-Therefore, stylesheets must be imported using the `url` option, and rendered inside `Helmet`:
+Importing stylesheets directly (e.g., `import './styles.css'`) must be avoided, because the bundler will preload it regardless of the feature flag configuration. Instead, you should use your bundler's URL import feature to load stylesheets dynamically.
 
-    import stylesheetUrl from './styles.scss?url';
-    import Helmet from 'react-helmet';
+For example, with Vite you can use the `?url` suffix:
 
-    export const SomeComponent = () => {
-        return (
-            <>
-                <Helmet>
-                    <link href={stylesheetUrl} rel="stylesheet" media="all" />
-                </Helmet>
-                <p>My content</p>
-            </>
-        );
-    }
+```tsx
+// Don't do this:
+import './styles.css'  // ❌ Will be loaded regardless of feature flag
+
+// Do this instead:
+import stylesheetUrl from './styles.css?url'  // ✅ Will be loaded only when needed
+
+// Then use your preferred method to inject the stylesheet
+// For example, you could use react-helmet, or create a style tag dynamically:
+const MyComponent = () => {
+  useEffect(() => {
+    const link = document.createElement('link')
+    link.href = stylesheetUrl
+    link.rel = 'stylesheet'
+    document.head.appendChild(link)
+    return () => document.head.removeChild(link)
+  }, [])
+
+  return <div>My component content</div>
+}

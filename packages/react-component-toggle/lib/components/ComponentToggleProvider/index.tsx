@@ -4,18 +4,18 @@ import type { ComponentToggleProviderProps } from './types'
 
 export function ComponentToggleProvider({
   flags,
-  componentsPath,
+  importFn,
   children,
 }: ComponentToggleProviderProps) {
   const context = useMemo(
     () => ({
       flags,
-      componentsPath,
+      importFn,
       isEnabled: (feature: string) => {
         return flags[feature] ?? false
       },
     }),
-    [flags, componentsPath],
+    [flags, importFn],
   )
 
   return (

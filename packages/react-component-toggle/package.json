@@ -3,6 +3,7 @@
   "private": false,
   "version": "0.0.1",
   "type": "module",
+  "types": "./dist/lib/main.d.ts",
   "exports": {
     ".": {
       "types": "./dist/lib/main.d.ts",

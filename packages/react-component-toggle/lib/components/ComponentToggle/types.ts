@@ -1,5 +1,3 @@
-import { FC, ReactNode } from "react";
-
 /**
  * The base props interface for the ComponentToggle. It is a generic interface that
  * takes a Features type parameter which describes the available features.

@@ -15,12 +15,7 @@ export const InternalComponentToggle = <
   renderFallback,
   ...props
 }: Props) => {
-  const { flags: featureFlags, componentsPath } = useComponentToggleContext();
-
-  if (!componentsPath) {
-    throw new Error('componentsPath must be provided in ComponentToggleProvider');
-  }
-
+  const { flags: featureFlags, importFn } = useComponentToggleContext();
   const splitFeature = useMemo(() => (feature as string).split('/'), [feature]);
 
   const Component: FeatureComponent<Props> = useMemo(() => {
@@ -30,16 +25,11 @@ export const InternalComponentToggle = <
 
     // Use a function that returns the import() call
     const importFeature = () => {
-      const path = splitFeature.length === 2
-        ? `${componentsPath}/${splitFeature[0]}/${splitFeature[1]}`
-        : `${componentsPath}/${splitFeature[0]}`;
-      
-      // Let the consuming app's build system resolve the path
-      return import(/* @vite-ignore */ path);
+      return importFn(splitFeature);
     };
 
     return memo(lazy(importFeature));
-  }, [splitFeature, componentsPath]);
+  }, [splitFeature, importFn]);
 
   const featureEnabled = useMemo(
     () =>

@@ -1,13 +1,14 @@
 export type ToggleFlags = Record<string, boolean>
 
-export interface ComponentToggleContextType {
+interface ComponentToggleBaseType {
   flags: ToggleFlags
-  componentsPath?: string,
+  importFn: (featurePathComponents: string[]) => Promise<any>;
+}
+
+export interface ComponentToggleContextType extends ComponentToggleBaseType {
   isEnabled: (feature: string) => boolean
 }
 
-export interface ComponentToggleProviderProps {
-  flags: ToggleFlags,
-  componentsPath?: string,
+export interface ComponentToggleProviderProps extends ComponentToggleBaseType{
   children: React.ReactNode
 }

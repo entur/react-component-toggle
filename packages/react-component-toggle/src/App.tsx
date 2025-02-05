@@ -14,7 +14,7 @@ export function App() {
   }
 
   return (
-    <ComponentToggleProvider flags={toggleFlags} componentsPath="/src/ext">
+    <ComponentToggleProvider flags={toggleFlags} importFn={(featurePathComponents) => import("/src/ext/" + featurePathComponents.join("/"))}>
       <div>
         <h1>Sandbox Feature Demo</h1>
         <div className="feature-toggle">

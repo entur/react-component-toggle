@@ -75,6 +75,56 @@ importers:
         specifier: ~5.6.2
         version: 5.6.3
 
+  packages/test-app:
+    dependencies:
+      '@entur/react-component-toggle':
+        specifier: workspace:*
+        version: link:../react-component-toggle
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.2.0
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@entur/rollup-plugin-react-component-toggle':
+        specifier: workspace:*
+        version: link:../rollup-plugin
+      '@types/react':
+        specifier: ^18.2.64
+        version: 18.3.12
+      '@types/react-dom':
+        specifier: ^18.2.21
+        version: 18.3.1
+      '@vitejs/plugin-react':
+        specifier: ^4.2.1
+        version: 4.3.3(vite@5.4.11(@types/node@22.9.3))
+      typescript:
+        specifier: ^5.4.2
+        version: 5.6.3
+      vite:
+        specifier: ^5.1.5
+        version: 5.4.11(@types/node@22.9.3)
+      vite-tsconfig-paths:
+        specifier: ^5.1.3
+        version: 5.1.3(typescript@5.6.3)(vite@5.4.11(@types/node@22.9.3))
+
+  packages/vite-plugin:
+    dependencies:
+      fast-glob:
+        specifier: ^3.3.0
+        version: 3.3.2
+    devDependencies:
+      '@types/node':
+        specifier: ^22.9.1
+        version: 22.9.3
+      typescript:
+        specifier: ~5.6.2
+        version: 5.6.3
+      vite:
+        specifier: ^5.0.0
+        version: 5.4.11(@types/node@22.9.3)
+
 packages:
 
   '@ampproject/remapping@2.3.0':
@@ -945,6 +995,9 @@ packages:
     resolution: {integrity: sha512-1+gLErljJFhbOVyaetcwJiJ4+eLe45S2E7P5UiZ9xGfeq3ATQf5DOv9G7MH3gGbKQLkzmNh2DxfZwLdw+j6oTQ==}
     engines: {node: '>=18'}
 
+  globrex@0.1.2:
+    resolution: {integrity: sha512-uHJgbwAMwNFf5mLst7IWLNg14x1CkeqglJb/K3doi4dw6q2IvAAmM/Y81kevy83wP+Sst+nutFTYOGg3d1lsxg==}
+
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
 
@@ -1321,6 +1374,16 @@ packages:
     peerDependencies:
       typescript: '>=4.2.0'
 
+  tsconfck@3.1.4:
+    resolution: {integrity: sha512-kdqWFGVJqe+KGYvlSO9NIaWn9jT1Ny4oKVzAJsKii5eoE9snzTJzL4+MMVOMn+fikWGFmKEylcXL710V/kIPJQ==}
+    engines: {node: ^18 || >=20}
+    hasBin: true
+    peerDependencies:
+      typescript: ^5.0.0
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+
   type-check@0.4.0:
     resolution: {integrity: sha512-XleUoc9uwGXqjWwXaUTZAmzMcFZ5858QA2vvx1Ur5xIcixXIP+8LnFDgRplU30us6teqdlskFfu+ae4K79Ooew==}
     engines: {node: '>= 0.8.0'}
@@ -1369,6 +1432,14 @@ packages:
     engines: {node: ^14.18.0 || >=16.0.0}
     peerDependencies:
       typescript: '*'
+      vite: '*'
+    peerDependenciesMeta:
+      vite:
+        optional: true
+
+  vite-tsconfig-paths@5.1.3:
+    resolution: {integrity: sha512-0bz+PDlLpGfP2CigeSKL9NFTF1KtXkeHGZSSaGQSuPZH77GhoiQaA8IjYgOaynSuwlDTolSUEU0ErVvju3NURg==}
+    peerDependencies:
       vite: '*'
     peerDependenciesMeta:
       vite:
@@ -2331,6 +2402,8 @@ snapshots:
 
   globals@15.12.0: {}
 
+  globrex@0.1.2: {}
+
   graceful-fs@4.2.11: {}
 
   graphemer@1.4.0: {}
@@ -2664,6 +2737,10 @@ snapshots:
     dependencies:
       typescript: 5.6.3
 
+  tsconfck@3.1.4(typescript@5.6.3):
+    optionalDependencies:
+      typescript: 5.6.3
+
   type-check@0.4.0:
     dependencies:
       prelude-ls: 1.2.1
@@ -2717,6 +2794,17 @@ snapshots:
       - '@types/node'
       - rollup
       - supports-color
+
+  vite-tsconfig-paths@5.1.3(typescript@5.6.3)(vite@5.4.11(@types/node@22.9.3)):
+    dependencies:
+      debug: 4.3.7
+      globrex: 0.1.2
+      tsconfck: 3.1.4(typescript@5.6.3)
+    optionalDependencies:
+      vite: 5.4.11(@types/node@22.9.3)
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
 
   vite@5.4.11(@types/node@22.9.3):
     dependencies:

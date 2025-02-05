@@ -37,4 +37,4 @@ Contributions are welcome! Please read our contributing guidelines for details o
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the European Union Public License v. 1.2 (EUPL-1.2) - see the [LICENSE](LICENSE) file for details.

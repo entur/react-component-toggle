@@ -5,17 +5,19 @@ import type { ComponentToggleProviderProps } from './types'
 export function ComponentToggleProvider({
   flags,
   importFn,
+  maxFeatureDepth,
   children,
 }: ComponentToggleProviderProps) {
   const context = useMemo(
     () => ({
       flags,
       importFn,
+      maxFeatureDepth,
       isEnabled: (feature: string) => {
         return flags[feature] ?? false
       },
     }),
-    [flags, importFn],
+    [flags, importFn, maxFeatureDepth],
   )
 
   return (

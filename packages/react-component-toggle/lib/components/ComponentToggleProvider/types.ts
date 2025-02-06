@@ -1,8 +1,13 @@
 export type ToggleFlags = Record<string, boolean>
 
+type Module = {
+  default: React.ComponentType<any>;
+}
+
 interface ComponentToggleBaseType {
   flags: ToggleFlags
-  importFn: (featurePathComponents: string[]) => Promise<any>;
+  importFn: (featurePathComponents: string[]) => Promise<Module>;
+  maxFeatureDepth?: number;
 }
 
 export interface ComponentToggleContextType extends ComponentToggleBaseType {

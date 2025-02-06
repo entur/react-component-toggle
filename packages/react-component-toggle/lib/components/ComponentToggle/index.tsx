@@ -1,6 +1,6 @@
-import { lazy, memo, Suspense, useMemo } from 'react';
+import React, { lazy, memo, Suspense, useMemo } from 'react';
 import { ToggleFlags } from '../ComponentToggleProvider/types';
-import { FeatureComponent, ComponentToggleProps } from './types';
+import { ComponentToggleProps } from './types';
 import { useComponentToggleContext } from '../ComponentToggleProvider/context';
 
 /**
@@ -9,26 +9,22 @@ import { useComponentToggleContext } from '../ComponentToggleProvider/context';
  * The component is only rendered when the corresponding feature flag is enabled.
  */
 export const InternalComponentToggle = <
-  Features extends ToggleFlags,
-  Props extends ComponentToggleProps<Features>>({
+  ComponentProps extends Record<string, any>,
+  Features extends ToggleFlags>({
   feature,
   renderFallback,
   ...props
-}: Props) => {
-  const { flags: featureFlags, importFn } = useComponentToggleContext();
+}: ComponentToggleProps<Features, ComponentProps>) => {
+  const { flags: featureFlags, importFn, maxFeatureDepth = 1 } = useComponentToggleContext();
   const splitFeature = useMemo(() => (feature as string).split('/'), [feature]);
 
-  const Component: FeatureComponent<Props> = useMemo(() => {
-    if (splitFeature.length > 2) {
-      throw new Error('Max feature depth is 2');
-    }
+  if (splitFeature.length > maxFeatureDepth) {
+    throw new Error(`Max feature depth is ${maxFeatureDepth}`);
+  }
 
-    // Use a function that returns the import() call
-    const importFeature = () => {
-      return importFn(splitFeature);
-    };
-
-    return memo(lazy(importFeature));
+  // Ensure dynamic import works as expected
+  const Component = useMemo(() => {
+    return lazy(() => importFn(splitFeature));
   }, [splitFeature, importFn]);
 
   const featureEnabled = useMemo(
@@ -46,7 +42,7 @@ export const InternalComponentToggle = <
 
   return (
     <Suspense fallback={renderFallback?.() ?? null}>
-      <Component {...(props as any)} />
+      <Component {...(props.componentProps as ComponentProps & React.JSX.IntrinsicAttributes)} />
     </Suspense>
   );
 };

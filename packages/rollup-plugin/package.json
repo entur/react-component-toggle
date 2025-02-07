@@ -8,8 +8,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc",
-    "lint": "eslint . --ext ts --report-unused-disable-directives --max-warnings 0"
+    "build": "tsc"
   },
   "license": "EUPL-1.2",
   "peerDependencies": {

@@ -5,8 +5,7 @@
   "license": "EUPL-1.2",
   "scripts": {
     "build": "pnpm -r build",
-    "dev": "pnpm --filter @entur/react-component-toggle dev",
-    "lint": "pnpm -r lint"
+    "dev": "pnpm --filter @entur/react-component-toggle dev"
   },
   "devDependencies": {
     "typescript": "~5.6.2"

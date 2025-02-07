@@ -63,6 +63,7 @@ export interface ReactComponentToggleOptions {
  *         if (id.includes('special/')) {
  *           return 'special-chunk';
  *         }
+ *      }
  *     })
  *   ]
  * }
@@ -84,20 +85,26 @@ export default function reactComponentToggle({
       return {
         ...existingOutput,
         manualChunks: (id) => {
-          // Check excludes first
+          // Check excludes first - if file matches any exclude pattern, skip chunking
           if (exclude.some(str => id.includes(str))) {
             return;
           }
 
-          // Match any file under a component directory
-          const normalizedPath = id.replace(/\\/g, '/'); // Normalize path separators
+          // Normalize path separators for cross-platform compatibility (Windows/Unix)
+          const normalizedPath = id.replace(/\\/g, '/');
+
+          // Create a regex pattern to match component directories
+          // This will match 'componentsPath/componentName' and capture the componentName
           const componentDirPattern = new RegExp(`${componentsPath.replace('/', '\\/')}\/([^/]+)`);
           const match = normalizedPath.match(componentDirPattern);
 
+          // If the file is under a component directory, create a chunk for that component
           if (match && normalizedPath.includes(componentsPath)) {
-            return `${chunkPrefix}${match[1]}`;
+            return `${chunkPrefix}${match[1]}`; // Creates chunks like 'component-featureName'
           }
 
+          // If no automatic chunk was created and manualChunks is provided,
+          // let the user's function decide the chunk name
           if (manualChunks) {
             return manualChunks(id);
           }

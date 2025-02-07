@@ -11,6 +11,7 @@ import type { ComponentToggleProviderProps } from './types'
  * @param props.importFn - Function to dynamically import feature components
  * @param props.maxFeatureDepth - Maximum allowed depth for nested features (defaults to 1)
  * @param props.children - Child components that need access to feature flags
+ * @throws {Error} When importFn is not provided
  */
 export function ComponentToggleProvider({
   flags,
@@ -18,6 +19,10 @@ export function ComponentToggleProvider({
   maxFeatureDepth,
   children,
 }: ComponentToggleProviderProps) {
+  if (!importFn) {
+    throw new Error('importFn is required')
+  }
+
   const context = useMemo(
     () => ({
       flags,

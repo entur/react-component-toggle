@@ -9,6 +9,7 @@ export interface ComponentToggleProps<Features , ComponentProps> {
   feature: keyof Features
   renderFallback?: () => React.ReactNode
   componentProps?: ComponentProps
+  children?: React.ReactNode
 }
 
 /**

@@ -42,7 +42,9 @@ export const InternalComponentToggle = <
 
   return (
     <Suspense fallback={renderFallback?.() ?? null}>
-      <Component {...(props.componentProps as ComponentProps & React.JSX.IntrinsicAttributes)} />
+      <Component {...(props.componentProps as ComponentProps & React.JSX.IntrinsicAttributes)}>
+        {props.children}
+      </Component>
     </Suspense>
   );
 };

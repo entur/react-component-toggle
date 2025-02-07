@@ -36,11 +36,10 @@ export interface ReactComponentToggleOptions {
    *   if (id.includes('special/')) {
    *     return 'special-chunk';
    *   }
-   *   return null;
    * }
    * ```
    */
-  manualChunks?: (id: string) => string | null;
+  manualChunks?: (id: string) => string | undefined;
 }
 
 /**

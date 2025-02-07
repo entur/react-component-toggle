@@ -1,4 +1,10 @@
 {
     "extends": "./tsconfig.app.json",
-    "include": ["lib"]
+    "include": ["lib"],
+    "exclude": [
+      "lib/test",
+      "**/*.test.ts",
+      "**/*.test.tsx",
+      "vitest.config.ts"
+    ]
   }

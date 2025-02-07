@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { ComponentToggleProvider, useComponentToggleContext } from '../../lib/main';
+import { ComponentToggleProvider, useComponentToggleContext } from '../main';
 
 describe('ComponentToggleProvider', () => {
   type TestFeatures = {

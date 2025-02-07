@@ -41,7 +41,7 @@ Example with a feature called `foobar`:
 
 ```tsx
 //  src/components/foobar/index.tsx
-const Foobar: FeatureComponent<Features, FoobarProps> = (props) => {
+const Foobar: FeatureComponent<keyof Features, FoobarProps> = (props) => {
     return (
         <h1>{props.foo}</h1>
     )
@@ -54,7 +54,7 @@ The folder must also have a types.ts file which exports the props type declarati
 
 ```typescript
 // src/components/foobar/types.ts
-export interface FoobarProps extends ComponentToggleProps<Features> {
+export interface FoobarProps {
     foo: string;
 }
 ```
@@ -65,7 +65,7 @@ to your component's runtime code.
 To use your feature in the main code, you'll use the ComponentToggle:
 
 ```tsx
-<ComponentToggle<FoobarProps>
+<ComponentToggle<keyof MyFeatures, FoobarProps>
     feature="foobar"
     foo="bar"
 />
@@ -82,7 +82,7 @@ A `renderFallback` function prop is also available to give the option to render 
 if the feature is not enabled:
 
 ```tsx
-<ComponentToggle<FoobarProps>
+<ComponentToggle<keyof MyFeatures, FoobarProps>
     feature="foobar"
     foo="bar"
     renderFallback={() => <h1>foo</h1>}
@@ -108,12 +108,12 @@ Example:
 
 ```tsx
 // Define your Features type
-interface Features {
+interface MyFeatures {
     foobar: boolean;
 }
 
 // Configure your feature flags
-const flags = {
+const flags: MyFeatures = {
   foobar: true
 }
 
@@ -145,7 +145,7 @@ First, define your Features type in your application:
 
 ```typescript
 // src/types/features.ts
-export interface Features {
+export interface MyFeatures {
     foobar: boolean;
 }
 ```
@@ -197,7 +197,7 @@ const flags = {
 You can reference each sub-level feature as follows:
 
 ```tsx
-<ComponentToggle<FoobarProps>
+<ComponentToggle<keyof MyFeatures, FoobarProps>
     feature="foobar/foo"
     foo="bar"
 />
@@ -206,7 +206,7 @@ You can reference each sub-level feature as follows:
 and
 
 ```tsx
-<ComponentToggle<FoobarProps>
+<ComponentToggle<keyof MyFeatures, FoobarProps>
     feature="foobar/bar"
     bar="foo"
 />

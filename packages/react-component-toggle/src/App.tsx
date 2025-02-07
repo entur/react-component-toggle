@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { ComponentToggleProvider, ToggleFlags, ComponentToggle } from '../lib/main'
+import { ComponentToggleProvider, ComponentToggle } from '../lib/main'
 import type { ButtonProps } from './ext/myfeature/button/types';
 import './App.css'
 
-interface MyFeatures extends ToggleFlags {
-  myfeature: boolean;
-}
 
+type MyFeatures = {
+  myfeature: boolean
+}
 
 export function App() {
   const [count, setCount] = useState(0)
@@ -39,7 +39,7 @@ export function App() {
           </label>
         </div>
         <div className="card">
-          <ComponentToggle<ButtonProps, MyFeatures>
+          <ComponentToggle<keyof MyFeatures, ButtonProps>
             feature="myfeature/button"
             renderFallback={() => <button>Button feature is disabled</button>}
             componentProps={{

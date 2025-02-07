@@ -9,7 +9,7 @@ export const ComponentToggleContext = createContext<ComponentToggleContextType |
  * @throws {Error} If used outside of a ComponentToggleProvider
  * @returns The ComponentToggle context value
  */
-export function useComponentToggleContext(): ComponentToggleContextType {
+export function useComponentToggleContext<K extends string = string>(): ComponentToggleContextType<K> {
   const context = useContext(ComponentToggleContext)
   if (context === undefined) {
     throw new Error('useComponentToggleContext must be used within a ComponentToggleProvider')

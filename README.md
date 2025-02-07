@@ -23,15 +23,81 @@ npm install -g pnpm
 # Install dependencies
 pnpm install
 
-# Build all packages
-pnpm build
+# Start development
+pnpm dev
 
 # Run tests
 pnpm test
-
-# Lint all packages
-pnpm lint
 ```
+
+## Release Process
+
+This project uses [changesets](https://github.com/changesets/changesets) to manage versions, create changelogs, and publish to npm.
+
+### Adding Changes
+
+When making changes:
+
+1. Create a changeset:
+   ```bash
+   pnpm changeset
+   ```
+
+2. Follow the prompts to:
+   - Select which packages have changed
+   - Choose the version bump (major/minor/patch)
+   - Write a description of your changes
+
+3. Commit the changeset file with your changes:
+   ```bash
+   git add .
+   git commit -m "feat: your feature description"
+   git push
+   ```
+
+### Publishing a New Version
+
+1. Make sure you're on master and up to date:
+   ```bash
+   git checkout master
+   git pull origin master
+   ```
+
+2. Update versions and changelogs:
+   ```bash
+   pnpm version-packages
+   ```
+
+3. Review the changes, then commit:
+   ```bash
+   git add .
+   git commit -m "chore: version packages"
+   ```
+
+4. Make sure you're logged into npm with appropriate permissions:
+   ```bash
+   npm login
+   ```
+
+5. Build and publish:
+   ```bash
+   pnpm build
+   pnpm publish -r
+   ```
+
+6. Create and push git tags:
+   ```bash
+   # Get the current version
+   VERSION=$(node -p "require('./packages/react-component-toggle/package.json').version")
+   git tag v$VERSION
+   git push origin v$VERSION
+   ```
+
+### Version Bump Types
+
+- `major` (1.0.0 -> 2.0.0): Breaking changes
+- `minor` (1.0.0 -> 1.1.0): New features (backwards compatible)
+- `patch` (1.0.0 -> 1.0.1): Bug fixes and minor updates
 
 ## Contributing
 

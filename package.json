@@ -8,9 +8,14 @@
     "dev": "pnpm --filter @entur/react-component-toggle dev",
     "test": "pnpm -r test",
     "test:coverage": "pnpm -r test:coverage",
-    "test:ui": "pnpm -r test:ui"
+    "test:ui": "pnpm -r test:ui",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.12",
     "typescript": "~5.6.2"
   }
 }

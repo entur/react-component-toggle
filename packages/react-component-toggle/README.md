@@ -1,5 +1,7 @@
 # @entur/react-component-toggle
 
+[![CI](https://github.com/entur/react-component-toggle/actions/workflows/ci.yml/badge.svg)](https://github.com/entur/react-component-toggle/actions/workflows/ci.yml)
+
 Make any React component feature-flaggable with full type safety and lazy loading.
 
 Features are controlled by feature flags. The component toggle is designed to support code splitting, 

@@ -1,5 +1,7 @@
 # React Component Toggle Monorepo
 
+[![CI](https://github.com/entur/react-component-toggle/actions/workflows/ci.yml/badge.svg)](https://github.com/entur/react-component-toggle/actions/workflows/ci.yml)
+
 This monorepo contains packages for implementing feature-flagged React components with code splitting support.
 
 ## Packages

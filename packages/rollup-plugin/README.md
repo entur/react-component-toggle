@@ -1,5 +1,7 @@
 # @entur/rollup-plugin-react-component-toggle
 
+[![CI](https://github.com/entur/react-component-toggle/actions/workflows/ci.yml/badge.svg)](https://github.com/entur/react-component-toggle/actions/workflows/ci.yml)
+
 A Rollup plugin that enables code-splitting for [@entur/react-component-toggle](../react-component-toggle).
 
 This plugin automatically creates separate chunks for each component in your components directory, enabling efficient lazy loading of feature-flagged components.

@@ -6,8 +6,9 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
-    directories:
-      - "/packages/**/" # Location of package manifests
+    directories:  # Location of package manifests
+      - "/packages/react-component-toggle/"
+      - "/packages/rollup-plugin/"
     schedule:
       interval: "weekly"
   - package-ecosystem: "github-actions" # See documentation for possible values

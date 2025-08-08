@@ -6,10 +6,11 @@
 version: 2
 updates:
   - package-ecosystem: "npm" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    directories:
+      - "/packages/**/" # Location of package manifests
     schedule:
       interval: "weekly"
   - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: ".github" # Location of package manifests
+    directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"

@@ -1,12 +1,13 @@
 import React, { lazy, memo, Suspense, useMemo } from 'react';
 import { ComponentToggleProps } from './types';
 import { useComponentToggleContext } from '../ComponentToggleProvider/context';
+import { isFeatureEnabled } from '../featureUtils';
 
 /**
  * A component that can load a feature component. It is a generic component that
  * lazily renders the feature component identified by the `feature` prop.
  * The component is only rendered when the corresponding feature flag is enabled.
- * 
+ *
  * @template K - The type of feature keys
  * @template ComponentProps - The props type for the feature component
  */
@@ -32,14 +33,8 @@ export const InternalComponentToggle = <
   const featureEnabled = useMemo(
     () =>
       featureFlags &&
-      Object.entries(featureFlags).some(([key, value]) => {
-        if (!value) return false;
-        // Exact match: "Entur/CustomLogo" enables only "Entur/CustomLogo"
-        if (key.includes('/')) return key === (feature as string);
-        // Prefix match: "Entur" enables all "Entur/*" features
-        return key === splitFeature[0];
-      }),
-    [featureFlags, splitFeature, feature],
+      isFeatureEnabled(featureFlags, feature as string),
+    [featureFlags, feature],
   );
 
   if (!featureEnabled) {

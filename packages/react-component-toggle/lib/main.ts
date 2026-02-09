@@ -4,3 +4,5 @@ export { useComponentToggleContext, useComponentToggle } from './components/Comp
 
 export { default as ComponentToggle } from './components/ComponentToggle'
 export type { ComponentToggleProps, FeatureComponent } from './components/ComponentToggle/types'
+
+export { useToggledImport } from './components/useToggledImport'

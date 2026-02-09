@@ -10,10 +10,11 @@ of any given chunk until it decides it's time to render the component inside.
 
 To enable code splitting for your feature components, you'll need to use the companion Rollup plugin [@entur/rollup-plugin-react-component-toggle](../rollup-plugin). See its documentation for setup instructions.
 
-This library consists of two components:
+This library provides:
 
+- `ComponentToggleProvider` - a component that provides the feature flags configuration and import function context.
 - `ComponentToggle` - a component that lazily loads and renders feature components based on feature flags. It only loads and renders the component when its corresponding feature flag is enabled.
-- `ComponentToggleProvider` - a component that provides the feature flags configuration and component path context.
+- `useToggledImport` - a hook for dynamically importing non-component modules (themes, configs, data) behind feature flags, with Suspense-based loading.
 
 ## Installation
 
@@ -213,6 +214,53 @@ and
     bar="foo"
 />
 ```
+
+## Importing non-component modules
+
+`ComponentToggle` is designed for lazy-loading React **components**. For non-component imports (themes, configs, data objects), use the `useToggledImport` hook instead.
+
+`useToggledImport` dynamically imports a module's `default` export behind a feature flag with code splitting. When the feature is disabled, the fallback value is returned synchronously. When enabled, the hook suspends until the import resolves, then returns the imported value — the component renders exactly once with the correct value (no flash of fallback).
+
+The consuming component **must** be wrapped in a `<Suspense>` boundary.
+
+```tsx
+import { Suspense } from 'react';
+import { useToggledImport } from '@entur/react-component-toggle';
+import type { Theme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+// Inner component that may suspend
+const ThemeLoader = ({ children }: { children: React.ReactNode }) => {
+  const theme = useToggledImport<Theme>(
+    `${extPath}/CustomTheme`,
+    () => createTheme(), // fallback when feature is disabled
+  );
+  return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
+};
+
+// Outer component provides the Suspense boundary
+const MyThemeProvider = ({ children }: { children: React.ReactNode }) => (
+  <Suspense>
+    <ThemeLoader>{children}</ThemeLoader>
+  </Suspense>
+);
+```
+
+The feature module must have a default export matching the expected type:
+
+```typescript
+// src/ext/Entur/CustomTheme/index.ts
+export { default } from './theme';
+
+// src/ext/Entur/CustomTheme/theme.ts
+import { createTheme } from '@mui/material/styles';
+const theme = createTheme({ /* ... */ });
+export default theme;
+```
+
+The same feature flag matching rules apply as for `ComponentToggle`:
+- Prefix match: flag `"Entur": true` enables all `Entur/*` features
+- Exact match: flag `"Entur/CustomTheme": true` enables only that specific feature
 
 ## How to include stylesheets in feature components
 

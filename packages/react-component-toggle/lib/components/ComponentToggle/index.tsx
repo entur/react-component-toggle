@@ -33,9 +33,13 @@ export const InternalComponentToggle = <
     () =>
       featureFlags &&
       Object.entries(featureFlags).some(([key, value]) => {
-        return key.split('/')[0] === splitFeature[0] && value;
+        if (!value) return false;
+        // Exact match: "Entur/CustomLogo" enables only "Entur/CustomLogo"
+        if (key.includes('/')) return key === (feature as string);
+        // Prefix match: "Entur" enables all "Entur/*" features
+        return key === splitFeature[0];
       }),
-    [featureFlags, splitFeature],
+    [featureFlags, splitFeature, feature],
   );
 
   if (!featureEnabled) {

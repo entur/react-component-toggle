@@ -80,6 +80,54 @@ describe('ComponentToggle', () => {
     consoleError.mockRestore();
   });
 
+  it('enables only the exact feature when flag key contains a slash', async () => {
+    const importFn = vi.fn().mockResolvedValue({ default: TestComponent });
+
+    render(
+      <ComponentToggleProvider
+        flags={{ 'testFeature/nested': true }}
+        importFn={importFn}
+        maxFeatureDepth={2}
+      >
+        <ComponentToggle<string, {}>
+          feature="testFeature/nested"
+        />
+        <ComponentToggle<string, {}>
+          feature="testFeature/other"
+          renderFallback={() => <div>Other Fallback</div>}
+        />
+      </ComponentToggleProvider>
+    );
+
+    expect(await screen.findByText('Test Component')).toBeInTheDocument();
+    expect(screen.getByText('Other Fallback')).toBeInTheDocument();
+    expect(importFn).toHaveBeenCalledTimes(1);
+    expect(importFn).toHaveBeenCalledWith(['testFeature', 'nested']);
+  });
+
+  it('enables all sub-features when flag key has no slash (prefix match)', async () => {
+    const importFn = vi.fn().mockResolvedValue({ default: TestComponent });
+
+    render(
+      <ComponentToggleProvider
+        flags={{ testFeature: true }}
+        importFn={importFn}
+        maxFeatureDepth={2}
+      >
+        <ComponentToggle<string, {}>
+          feature="testFeature/nested"
+        />
+        <ComponentToggle<string, {}>
+          feature="testFeature/other"
+        />
+      </ComponentToggleProvider>
+    );
+
+    const components = await screen.findAllByText('Test Component');
+    expect(components).toHaveLength(2);
+    expect(importFn).toHaveBeenCalledTimes(2);
+  });
+
   it('throws error when feature depth exceeds maximum', () => {
     const importFn = vi.fn();
     const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});

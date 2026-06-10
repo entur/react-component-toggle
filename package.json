@@ -14,7 +14,7 @@
     "release": "pnpm build && changeset publish"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.29.5",
-    "typescript": "~5.9.2"
+    "@changesets/cli": "2.31.0",
+    "typescript": "6.0.3"
   }
 }

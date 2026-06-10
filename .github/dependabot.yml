@@ -1,17 +1,28 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
+# All deps in this repo are pinned to exact versions (no ^ or ~) except for
+# peerDependencies. Dependabot preserves the existing range style, so it
+# keeps writing exact versions on bumps as long as package.json stays exact.
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
 
 version: 2
 updates:
-  - package-ecosystem: "npm" # See documentation for possible values
-    directories:  # Location of package manifests
+  - package-ecosystem: "npm"
+    directories:
+      - "/"
       - "/packages/react-component-toggle/"
       - "/packages/rollup-plugin/"
     schedule:
       interval: "weekly"
-  - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: "/" # Location of package manifests
+    open-pull-requests-limit: 10
+    groups:
+      npm-all:
+        patterns:
+          - "*"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "weekly"
+    groups:
+      actions-all:
+        patterns:
+          - "*"

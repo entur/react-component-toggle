@@ -21,7 +21,7 @@
     "@types/node": "^24.9.1",
     "@vitest/coverage-v8": "^4.1.0",
     "@vitest/ui": "^4.1.0",
-    "typescript": "~5.9.2",
+    "typescript": "~6.0.3",
     "vitest": "^4.1.0"
   },
   "license": "EUPL-1.2"

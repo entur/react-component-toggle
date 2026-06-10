@@ -14,13 +14,14 @@
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui"
   },
-  "dependencies": {
-    "rollup": "4.61.1"
+  "peerDependencies": {
+    "rollup": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "25.9.2",
     "@vitest/coverage-v8": "4.1.8",
     "@vitest/ui": "4.1.8",
+    "rollup": "4.61.1",
     "typescript": "6.0.3",
     "vitest": "4.1.8"
   },

@@ -2,14 +2,18 @@
 # peerDependencies. Dependabot preserves the existing range style, so it
 # keeps writing exact versions on bumps as long as package.json stays exact.
 # https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+#
+# This is a pnpm workspace with a single root pnpm-lock.yaml. Dependabot must
+# target only the root ("/"): it discovers every workspace member package.json
+# from the root manifest and updates them together with the one lockfile in a
+# single PR. Listing the packages/* directories separately made Dependabot bump
+# a sub-package package.json without a lockfile to update, producing PRs whose
+# lockfile was out of sync -> CI's frozen-lockfile install failed every time.
 
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directories:
-      - "/"
-      - "/packages/react-component-toggle/"
-      - "/packages/rollup-plugin/"
+    directory: "/"
     schedule:
       interval: "weekly"
     open-pull-requests-limit: 10

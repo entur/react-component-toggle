@@ -18,12 +18,12 @@
     "rollup": "^4.0.0"
   },
   "devDependencies": {
-    "@types/node": "26.1.2",
-    "@vitest/coverage-v8": "4.1.10",
-    "@vitest/ui": "4.1.10",
-    "rollup": "4.62.3",
-    "typescript": "6.0.3",
-    "vitest": "4.1.10"
+    "@types/node": "26.4.0",
+    "@vitest/coverage-v8": "4.1.11",
+    "@vitest/ui": "4.1.11",
+    "rollup": "4.63.1",
+    "typescript": "7.0.2",
+    "vitest": "4.1.11"
   },
   "license": "EUPL-1.2"
 }
